@@ -4,7 +4,7 @@ import QuestionForm from './QuestionForm/QuestionForm';
 import ArticleForm from './ArticleForm/ArticleForm';
 import PostButton from './PostButton/PostButton';
 import { createQuestion, createArticle } from '../../services/posts';
-import { useNavigate, Link } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import CodeMirror from '@uiw/react-codemirror';
@@ -18,7 +18,6 @@ export default function PostComposePage() {
     const [article, setArticle] = useState({ title: '', abstract: '', text: '', tags: '', imageFile: null });
     const [loading, setLoading] = useState(false);
     const [codeBlock, setCodeBlock] = useState('');
-    const nav = useNavigate();
 
     const handlePost = async () => {
         try {

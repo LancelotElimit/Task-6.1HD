@@ -1,6 +1,6 @@
 // src/services/messages.js
 import {
-    addDoc, setDoc, getDoc, getDocs, doc, collection, query, where,
+    addDoc, getDocs, doc, collection, query, where,
     orderBy, onSnapshot, serverTimestamp, updateDoc, arrayUnion
 } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";

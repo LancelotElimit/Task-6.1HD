@@ -1,6 +1,6 @@
 import {
      collection, addDoc, deleteDoc, doc,
-         getDocs, query, orderBy, updateDoc, increment, getDoc, runTransaction, serverTimestamp, setDoc,onSnapshot
+         getDocs, query, orderBy, updateDoc, increment, getDoc, runTransaction, serverTimestamp,onSnapshot
      } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage, ts ,auth } from '../lib/firebase';
