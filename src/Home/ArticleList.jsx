@@ -1,4 +1,4 @@
-﻿const contributors = [
+const contributors = [
     {
         id: "u1",
         name: "Ava Taylor",

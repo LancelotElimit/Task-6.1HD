@@ -1,4 +1,4 @@
-﻿// src/services/users.js
+// src/services/users.js
 import { auth, db } from "../lib/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 

@@ -1,4 +1,4 @@
-﻿// src/messages/MessagesPage.jsx
+// src/messages/MessagesPage.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
     ensureConversationWithEmail,
