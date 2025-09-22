@@ -1,0 +1,30 @@
+[debug] [2025-09-15T13:04:39.890Z] ----------------------------------------------------------------------
+[debug] [2025-09-15T13:04:39.892Z] Command:       D:\node.js\node.exe C:\Users\10146\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:secrets:set STRIPE_SK
+[debug] [2025-09-15T13:04:39.892Z] CLI Version:   14.16.0
+[debug] [2025-09-15T13:04:39.892Z] Platform:      win32
+[debug] [2025-09-15T13:04:39.892Z] Node Version:  v22.17.0
+[debug] [2025-09-15T13:04:39.893Z] Time:          Mon Sep 15 2025 23:04:39 GMT+1000 (Australian Eastern Standard Time)
+[debug] [2025-09-15T13:04:39.893Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-15T13:04:40.025Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-15T13:04:40.025Z] > authorizing via signed-in user (1014688251@qq.com)
+[debug] [2025-09-15T13:04:40.025Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-15T13:04:40.026Z] > authorizing via signed-in user (1014688251@qq.com)
+[debug] [2025-09-15T13:04:40.026Z] [iam] checking project task-71p-6d5ef for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2025-09-15T13:04:40.026Z] Checked if tokens are valid: true, expires at: 1757942626405
+[debug] [2025-09-15T13:04:40.026Z] Checked if tokens are valid: true, expires at: 1757942626405
+[debug] [2025-09-15T13:04:40.027Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef:testIamPermissions [none]
+[debug] [2025-09-15T13:04:40.027Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef:testIamPermissions x-goog-quota-user=projects/task-71p-6d5ef
+[debug] [2025-09-15T13:04:40.027Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-09-15T13:04:41.155Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef:testIamPermissions 200
+[debug] [2025-09-15T13:04:41.155Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2025-09-15T13:04:41.155Z] Checked if tokens are valid: true, expires at: 1757942626405
+[debug] [2025-09-15T13:04:41.155Z] Checked if tokens are valid: true, expires at: 1757942626405
+[debug] [2025-09-15T13:04:41.156Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef [none]
+[debug] [2025-09-15T13:04:41.435Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef 200
+[debug] [2025-09-15T13:04:41.435Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/task-71p-6d5ef {"projectNumber":"489957127485","projectId":"task-71p-6d5ef","lifecycleState":"ACTIVE","name":"task-71p","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-08-29T08:28:15.030542Z"}
+[debug] [2025-09-15T13:04:41.436Z] Checked if tokens are valid: true, expires at: 1757942626405
+[debug] [2025-09-15T13:04:41.436Z] Checked if tokens are valid: true, expires at: 1757942626405
+[debug] [2025-09-15T13:04:41.436Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/task-71p-6d5ef/secrets/STRIPE_SK [none]
+[debug] [2025-09-15T13:04:42.022Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/task-71p-6d5ef/secrets/STRIPE_SK 200
+[debug] [2025-09-15T13:04:42.022Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/task-71p-6d5ef/secrets/STRIPE_SK {"name":"projects/489957127485/secrets/STRIPE_SK","replication":{"automatic":{}},"createTime":"2025-09-15T11:39:45.210689Z","labels":{"firebase-managed":"functions"},"etag":"\"163ed575e0bd29\""}

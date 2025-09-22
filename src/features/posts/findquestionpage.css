@@ -1,0 +1,77 @@
+﻿/* ===== Arknights theme for FindQuestionPage ===== */
+:root{
+    --bg:#0f1115;--bg-alt:#13161b;--panel:#171a21;--border:#22262d;
+    --muted:#8b99a6;--text:#e5e7eb;--title:#f8fafc;
+    --brand:#ff8c1a;--radius:12px;--radius-sm:8px;
+    --shadow-1:0 6px 16px rgba(0,0,0,.35);--shadow-2:0 12px 28px rgba(0,0,0,.45)
+}
+/* 页面全局背景（灰黑） */
+html, body {
+    background: #22262d;   /* 灰黑色 */
+}
+
+
+/* 页面容器 */
+.find-wrap{max-width:1000px;margin:0 auto;padding:16px;color:var(--text)}
+.find-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.btn-back{border:1px solid var(--border);background:#141820;color:var(--text);
+    border-radius:var(--radius-sm);padding:6px 10px;cursor:pointer;font-weight:600}
+.btn-back:hover{background:#11161e}
+.find-title{margin:0;color:var(--title)}
+
+/* 工具栏 */
+.input{width:100%;background:#0c0f14;color:var(--text);
+    border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px}
+.input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,140,26,.18)}
+.find-toolbar{display:flex;gap:8px;align-items:center;margin:8px 0 12px;flex-wrap:wrap}
+.label{color:var(--muted);font-size:13px}
+
+/* 状态文本 */
+.state-loading{color:#94a3b8}
+.state-error{color:#ffb3b4}
+.state-empty{color:#94a3b8}
+
+/* 列表与卡片 */
+.post-list{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.card{background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-1)}
+.post-item{padding:12px}
+.post-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.post-title{font-weight:700;color:var(--title)}
+
+/* 作者区（右上角） */
+.post-author{display:flex;align-items:center;gap:8px}
+.avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:#0b0e12}
+.author-meta{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}
+.author-name{font-size:13px;color:#cbd5e1}
+.author-time{font-size:11px;color:#94a3b8}
+
+/* 图片与正文 */
+.post-image{max-width:100%;margin-top:8px;border-radius:8px}
+.post-body{margin-top:8px;line-height:1.6}
+
+/* 标签 */
+.post-tags{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;background:#141820;border:1px solid var(--border);padding:2px 6px;border-radius:999px;color:var(--muted)}
+
+/* 评论 */
+.comment-toggle{margin-top:8px}
+.comments{margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
+.comment-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.comment-item{display:flex;gap:8px;align-items:flex-start}
+.comment-meta{display:flex;justify-content:space-between;align-items:baseline}
+.comment-name{font-size:13px;color:#cbd5e1}
+.comment-time{font-size:11px;color:#94a3b8}
+.comment-delete{margin-top:4px;font-size:12px}
+
+/* 操作区 */
+.post-actions{margin-top:10px;display:flex;gap:8px;align-items:center}
+.button{border:1px solid var(--border);background:#1e232b;color:var(--text);
+    padding:8px 10px;border-radius:8px;cursor:pointer}
+.button[disabled]{opacity:.6;cursor:not-allowed}
+.button:hover{background:#202733;border-color:#2b313b}
+
+/* 悬浮发帖按钮 */
+.fab{position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;
+    border:none;cursor:pointer;background:linear-gradient(180deg,#ff9d2d,var(--brand));
+    color:#111;font-size:28px;line-height:56px;box-shadow:var(--shadow-2);z-index:1000}
+.fab:hover{filter:brightness(1.05)}

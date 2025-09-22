@@ -1,0 +1,79 @@
+﻿/* ===== Arknights theme for PostComposePage ===== */
+:root{
+    --bg:#0f1115; --bg-alt:#13161b; --panel:#171a21; --border:#22262d;
+    --muted:#8b99a6; --text:#e5e7eb; --title:#f8fafc;
+    --brand:#ff8c1a; --radius:12px; --radius-sm:8px;
+    --shadow-1:0 6px 16px rgba(0,0,0,.35); --shadow-2:0 12px 28px rgba(0,0,0,.45);
+}
+
+/* 页面背景（灰黑） */
+html, body { background:#0f1115; }
+
+/* 通用元素 */
+.card{
+    background:var(--bg-alt);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-1);
+}
+.btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 12px; border-radius:var(--radius-sm);
+    background:#1e232b; border:1px solid var(--border); color:var(--text);
+    cursor:pointer; transition:background .2s, border .2s, transform .05s;
+}
+.btn:hover{ background:#202733; border-color:#2b313b; }
+.btn:active{ transform:translateY(1px); }
+.linklike{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 12px; border-radius:var(--radius-sm);
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    text-decoration:none; font-weight:700;
+}
+.linklike:hover{ background:#151a22; border-color:#2b313b; }
+
+/* 分隔线 */
+.hr{ border:0; height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); margin:12px 0; }
+
+/* 布局 */
+.compose-wrap{
+    max-width:1200px; margin:24px auto; padding:16px; color:var(--text);
+}
+.top-actions{ display:flex; justify-content:flex-end; margin-bottom:8px; }
+
+.compose-grid{
+ display:grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr); /* 防止最小内容宽度撑破造成重叠 */
+  gap:16px;
+  align-items: stretch; /* 两侧等高 */
+}
+@media (max-width: 980px){
+    .compose-grid{ grid-template-columns: 1fr; }
+}
+
+.compose-left{ display:grid; gap:12px; }
+.compose-right{ display:flex;
+    flex-direction:column;
+    min-width:0; gap:8px; }
+
+/* 模块标题 */
+.section-title{ margin:0; color:var(--title); }
+
+/* 代码编辑区 */
+.editor-card{ padding:12px; }
+.editor-header{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.CodeMirror { height: 260px; border:1px solid var(--border); border-radius:var(--radius-sm); }
+
+/* 预览区 */
+.preview-card{
+    flex:1;            /* 填满右侧剩余空间，实现与左侧等高 */
+    overflow:auto;     /* 内容多时滚动，避免溢出压到左侧 */
+    padding:12px;
+    border:1px solid var(--border);
+}
+.preview-card h1, .preview-card h2, .preview-card h3 { color: var(--title); }
+.preview-card p, .preview-card li { color: var(--text); }
+.preview-card code { background:#0c0f14; border:1px solid var(--border); padding:2px 6px; border-radius:6px; }
+
+/* 发布按钮行 */
+.post-actions{ display:flex; justify-content:flex-end; margin-top:8px; }

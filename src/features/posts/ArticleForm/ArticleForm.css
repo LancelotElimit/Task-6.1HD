@@ -1,0 +1,37 @@
+﻿.af-form {
+    display: grid;
+    gap: 14px;
+}
+.af-field {
+    display: grid;
+    gap: 6px;
+}
+.af-field label {
+    font-weight: 600;
+}
+.af-req {
+    color: #dc2626;
+    margin-left: 4px;
+}
+.af-field input, .af-field textarea {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+    background: #fff;
+}
+.af-field textarea {
+    resize: vertical;
+}
+.af-field input:focus, .af-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+.af-hint {
+    color: #6b7280;
+    font-size: 12px;
+    text-align: right;
+}

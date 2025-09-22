@@ -1,0 +1,30 @@
+﻿.pb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, .25);
+}
+.pb-btn:hover {
+    background: #1d4ed8;
+}
+.pb-btn:active {
+    transform: translateY(1px);
+}
+.pb-disabled, .pb-btn:disabled {
+    background: #9ca3af !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+.pb-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
