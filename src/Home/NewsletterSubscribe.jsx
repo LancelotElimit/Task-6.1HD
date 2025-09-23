@@ -1,7 +1,7 @@
 // src/Home/NewsletterSubscribe.jsx
 import { useState } from "react";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "";
+const SUBSCRIBE_URL = process.env.REACT_APP_SUBSCRIBE_URL || "https://subscribe-j2wljuklga-uc.a.run.app";
 
 export default function NewsletterSubscribe() {
     const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ export default function NewsletterSubscribe() {
         }
         setBusy(true);
         try {
-            const res = await fetch(`${API_BASE}/api/subscribe`, {
+            const res = await fetch(SUBSCRIBE_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
