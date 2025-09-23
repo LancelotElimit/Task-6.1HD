@@ -10,6 +10,9 @@ const cors = require("cors")({origin: true});
 // 声明一个名为 STRIPE_SK 的机密（Stripe 私钥），部署后用
 const STRIPE_SK = defineSecret("STRIPE_SK");
 
+const MAILGUN_API_KEY = defineSecret("MAILGUN_API_KEY");
+const MAILGUN_DOMAIN = defineSecret("MAILGUN_DOMAIN");
+
 // 统一设置云函数所在区域（需与前端调用的 URL 中 region 一致）
 setGlobalOptions({region: "us-central1"});
 
@@ -72,3 +75,70 @@ exports.createPaymentIntent = https.onRequest(
       });
     },
 );
+exports.subscribe = https.onRequest(
+    {secrets: [MAILGUN_API_KEY, MAILGUN_DOMAIN]},
+    (req, res) => {
+      cors(req, res, async () => {
+        // 预检
+        if (req.method === "OPTIONS") {
+          res.set("Access-Control-Allow-Origin", "*");
+          res.set("Access-Control-Allow-Methods", "POST,OPTIONS");
+          res.set("Access-Control-Allow-Headers", "Content-Type");
+          return res.status(204).send("");
+        }
+
+        // 仅允许 POST
+        if (req.method !== "POST") {
+          return res.status(405).send("Method Not Allowed");
+        }
+
+        try {
+          const body = req.body || {};
+          const email = (body.email || "").trim();
+
+          if (!email) {
+            res.set("Access-Control-Allow-Origin", "*");
+            return res.status(400).json({error: "email is required"});
+          }
+
+          // 初始化 Mailgun 客户端
+          const formData = require("form-data");
+          const Mailgun = require("mailgun.js");
+          const mailgun = new Mailgun(formData);
+
+          const mg = mailgun.client({
+            username: "api",
+            key: MAILGUN_API_KEY.value(),
+          });
+
+          const domain = MAILGUN_DOMAIN.value();
+          if (!domain) {
+            res.set("Access-Control-Allow-Origin", "*");
+            return res
+                .status(500)
+                .json({error: "Mail service not configured (domain)"});
+          }
+
+          // 发送欢迎邮件
+          await mg.messages.create(domain, {
+            from: `DEV@Deakin Daily Insider <noreply@${domain}>`,
+            to: [email],
+            subject: "Welcome to DEV@Deakin Daily Insider!",
+            text:
+                `Hi ${email},\n\n` +
+                `Thanks for subscribing to DEV@Deakin's Daily Insider!\n` +
+                `You'll now receive updates directly to this email.\n\n` +
+                `— The DEV@Deakin Team`,
+          });
+
+          res.set("Access-Control-Allow-Origin", "*");
+          return res.json({success: true});
+        } catch (err) {
+          console.error("Subscribe error:", err);
+          res.set("Access-Control-Allow-Origin", "*");
+          return res.status(502).json({error: "sending_failed"});
+        }
+      });
+    },
+);
+
