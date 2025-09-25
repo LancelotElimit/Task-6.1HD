@@ -10,11 +10,14 @@ import { auth } from "../../lib/firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { ensureSelfUserDoc } from "../../services/users";
 import "./MessagesPage.css";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function MessagesPage() {
     const nav = useNavigate();
     const { id: routeCid } = useParams();
+
     const [me, setMe] = useState(() => auth.currentUser || null);
+    const [ready, setReady] = useState(false);               // ✅ 等待登录&建档就绪
 
     const [convos, setConvos] = useState([]);
     const [cid, setCid] = useState(routeCid || "");
@@ -26,47 +29,63 @@ export default function MessagesPage() {
 
     const listRef = useRef(null);
 
+    // ✅ 只在已登录后，先 ensureSelfUserDoc，再标记 ready
     useEffect(() => {
-        const unsubAuth = auth.onAuthStateChanged(async (u) => {
+        const off = onAuthStateChanged(auth, async (u) => {
             setMe(u || null);
             if (!u) {
+                setReady(false);
                 nav("/login", { replace: true, state: { from: "/messages" } });
-            } else {
-                await ensureSelfUserDoc();
+                return;
+            }
+            try {
+                await ensureSelfUserDoc(); // 创建/更新 /users/{uid}
+            } finally {
+                setReady(true);            // 只有这里置 true，后续订阅才会启动
             }
         });
-        return () => unsubAuth();
+        return () => off && off();
     }, [nav]);
 
-    // 订阅我的会话
+    // ✅ 订阅我的会话（仅在 ready 后）
     useEffect(() => {
-        if (!me) return;
-        const unsub = subscribeConversations((rows) => {
+        if (!ready || !me) return;
+        const stop = subscribeConversations((rows) => {
             setConvos(rows);
-            // 如果没有选中会话，自动选第一条
             if (!cid && rows.length) setCid(rows[0].id);
+        }, (err) => {
+            console.error("[subscribeConversations] PERM ERROR", err);
         });
-        return () => unsub();
-    }, [me]); // eslint-disable-line
+        return () => stop && stop();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ready, me?.uid]);
 
-    // 订阅选中会话的消息
+    // ✅ 订阅选中会话的消息（仅在 ready 且已选中会话后）
     useEffect(() => {
-        if (!cid) {
+        if (!ready || !cid) {
             setMsgs([]);
             return;
         }
-        const unsub = subscribeMessages(cid, (rows) => {
-            setMsgs(rows);
-            // 滚动到底
-            setTimeout(() => {
-                listRef.current?.scrollTo({
-                    top: listRef.current.scrollHeight,
-                    behavior: "smooth",
-                });
-            }, 0);
-        });
-        return () => unsub();
-    }, [cid]);
+        const stop = subscribeMessages(
+            cid,
+            (rows) => {
+                setMsgs(rows);
+                // 滚至底部
+                setTimeout(() => {
+                    listRef.current?.scrollTo({
+                        top: listRef.current.scrollHeight,
+                        behavior: "smooth",
+                    });
+                }, 0);
+            },
+            (err) => {
+                console.error("[subscribeMessages] PERM ERROR", err);
+                // 若无权限（不是成员或规则限制），清空并提示
+                setMsgs([]);
+            }
+        );
+        return () => stop && stop();
+    }, [ready, cid]);
 
     const current = useMemo(
         () => convos.find((c) => c.id === cid) || null,
@@ -76,16 +95,14 @@ export default function MessagesPage() {
         if (!current || !me) return [];
         return (current.members || []).filter((x) => x !== me.uid);
     }, [current, me]);
-
     const other = useMemo(() => {
         if (!current || !others.length) return null;
-        const info = current.membersInfo?.[others[0]] || null;
-        return info;
+        return current.membersInfo?.[others[0]] || null;
     }, [current, others]);
 
     const startNew = async (e) => {
         e.preventDefault();
-        if (!toEmail.trim()) return;
+        if (!toEmail.trim() || !ready || !me) return;
         setBusyNew(true);
         try {
             const conv = await ensureConversationWithEmail(toEmail.trim());
@@ -100,20 +117,23 @@ export default function MessagesPage() {
 
     const onSend = async (e) => {
         e?.preventDefault?.();
-        if (!input.trim() || !cid) return;
+        if (!input.trim() || !cid || !ready || !me) return;
         const body = input;
         setInput("");
         setBusySend(true);
         try {
             await sendMessage(cid, body);
-            // 实时订阅会推送到 msgs
         } catch (e2) {
+            console.error("[sendMessage] error", e2);
             alert(`Send failed: ${e2?.code || e2?.message || e2}`);
             setInput(body); // 回滚输入
         } finally {
             setBusySend(false);
         }
     };
+
+    // ✅ 未就绪时先不渲染会触发订阅的 UI，避免权限报错
+    if (!ready) return <div className="msg-root">Loading…</div>;
 
     return (
         <div className="msg-root">
@@ -135,7 +155,6 @@ export default function MessagesPage() {
                 <div className="msg-section-title">Conversations</div>
                 <ul className="msg-convo-list">
                     {convos.map((c) => {
-                        // 显示对方的信息
                         const others = (c.members || []).filter((x) => x !== me?.uid);
                         const o = others.length ? c.membersInfo?.[others[0]] : null;
                         const name = o?.displayName || o?.email || "Unknown";
@@ -170,7 +189,6 @@ export default function MessagesPage() {
 
             {/* 右侧：聊天窗口 */}
             <section className="msg-chat">
-                {/* 顶部：对方信息 */}
                 <div className="msg-chat-header">
                     <button
                         onClick={() => (window.history.length > 1 ? nav(-1) : nav("/home"))}
@@ -190,15 +208,11 @@ export default function MessagesPage() {
                     </div>
                 </div>
 
-                {/* 消息列表 */}
                 <div ref={listRef} className="msg-chat-list">
                     {msgs.map((m) => {
                         const mine = m.from === me?.uid;
                         return (
-                            <div
-                                key={m.id}
-                                className={`msg-row ${mine ? "mine" : "other"}`}
-                            >
+                            <div key={m.id} className={`msg-row ${mine ? "mine" : "other"}`}>
                                 <div className={`msg-bubble ${mine ? "mine" : "other"}`}>
                                     {m.text}
                                     <div className={`msg-time ${mine ? "mine" : "other"}`}>
@@ -213,7 +227,6 @@ export default function MessagesPage() {
                     {msgs.length === 0 && <div className="msg-empty">Say hi 👋</div>}
                 </div>
 
-                {/* 输入框 */}
                 <form onSubmit={onSend} className="msg-inputbar">
                     <input
                         type="text"
