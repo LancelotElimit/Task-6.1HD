@@ -183,7 +183,7 @@ export default function Login() {
                 </div>
 
                 <div className="login-footer">
-                    <a href="/forgot">Forgot password?</a>
+                    <Link to="/forgot">Forgot password?</Link>
                 </div>
 
                 <div className="login-footer">
